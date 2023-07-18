@@ -75,14 +75,14 @@ def buscar(request):
     if request.GET['camada']:
 
         camada = request.GET['camada']
-        curso = Curso.objects.filter(camada__icontains=camada)
+        cursos = Curso.objects.filter(camada__icontains=camada)
 
-        return render(request, 'resultadosBusqueda.html', {'cursos':curso, 'camada':camada})
+        return render(request, 'inicio.html', {'cursos':cursos, 'camada':camada})
     
     else:
         respuesta = "No enviaste datos"
 
-    return HttpResponse(respuesta)
+    return render(request, 'inicio.html', {'respuesta':respuesta})
 
 
 

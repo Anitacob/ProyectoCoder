@@ -4,8 +4,20 @@
 
 {% block contenidoQueCambia %}
 
-   <h1>Este es el titulo del Inicio que cambio</h1>
-   <p>Se ha heredado todo desde la plantilla padre</p>
-   <h3>En el hijo, inicio hatml</h3>
+   {% if cursos %}
+       <p>Estamos buscando el: {{camada}}</p>
+       <ul>
+           {% for curso in cursos %}
+               <li> {{curso.nombre}} </li>
+               <li> {{curso.camada}} </li>
+           {% endfor %}
+       </ul>
+
+   {% else %}
+   <p>No hay datos con esa descripcion</p>
+
+   {% endif %}
+
+   <p style="color: red;">{{respuesta}}</p>
 
 {% endblock %}
