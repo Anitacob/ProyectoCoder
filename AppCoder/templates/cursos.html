@@ -4,8 +4,18 @@
 
 {% block contenidoQueCambia %}
 
-   <h1>Cursos</h1>
-   <p>SInfo de cursos</p>
-   
+   {% if miFormulario.errors %}
+      <p style="color: red;">Estan mal los datos, revisar</p>
+   {% endif %}
+
+   <form action="" method="POST">{% csrf_token %}
+      <table>
+         {{ miFormulario.as_table }}
+      </table>
+
+      <input type="submit", value="Enviar">
+
+   </form>
+
 
 {% endblock %}

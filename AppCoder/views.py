@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from AppCoder.models import Curso
-from AppCoder.forms import CursoFormulario
+from AppCoder.models import Curso, Profesor
+from AppCoder.forms import CursoFormulario, ProfesorFormulario
 
 
 
@@ -17,9 +17,6 @@ def curso(self):
 def inicio(request):
     return render(request, 'inicio.html')
 
-def cursos(request):
-    return render(request, 'cursos.html')
-
 def profesores(request):
     return render(request, 'profesores.html')
 
@@ -29,7 +26,7 @@ def estudiantes(request):
 def entregables(request):
     return render(request, 'entregables.html')
 
-def cursoFormulario(request):
+def cursos(request):
     if request.method == "POST":
 
         miFormulario = CursoFormulario(request.POST)
@@ -38,15 +35,56 @@ def cursoFormulario(request):
         if miFormulario.is_valid:
             informacion = miFormulario.cleaned_data
 
-        curso = Curso(nombre=informacion['curso'], camada=informacion['camada'])
-        curso.save()
-        return render(request, 'inicio.html')
+            curso = Curso(nombre=informacion['curso'], camada=informacion['camada'])
+            curso.save()
+            return render(request, 'inicio.html')
     
     else:
         miFormulario = CursoFormulario()
 
 
-    return render(request, 'cursoFormulario.html', {"miFormulario": miFormulario})
+    return render(request, 'cursos.html', {"miFormulario": miFormulario})
+
+def profesorFormulario(request):
+    if request.method == "POST":
+
+        miFormulario = ProfesorFormulario(request.POST)
+        print(miFormulario)
+
+        if miFormulario.is_valid:
+            informacion = miFormulario.cleaned_data
+
+            profesor = Profesor (nombre=informacion['nombre'], 
+                                 apellido=informacion['apellido'], 
+                                 email=informacion['email'], 
+                                 profesion=informacion['profesion'])
+            profesor.save()
+            return render(request, 'inicio.html')
+        
+    else:
+        miFormulario = ProfesorFormulario()
+
+    return render(request, 'profesorFormulario.html', {"miFormulario": miFormulario})
+
+def busquedaCamada(request):
+
+    return render(request, "busquedaCamada.html")
+
+def buscar(request):
+
+    if request.GET['camada']:
+
+        camada = request.GET['camada']
+        curso = Curso.objects.filter(camada__icontains=camada)
+
+        return render(request, 'resultadosBusqueda.html', {'cursos':curso, 'camada':camada})
+    
+    else:
+        respuesta = "No enviaste datos"
+
+    return HttpResponse(respuesta)
+
+
 
 
 
